@@ -156,7 +156,7 @@
 
             <!-- Action Button Section -->
             <div class="w-full">
-                <a href="mailto:gabriel.leguizamon01@universitadipavia.it?subject=Synapse:%20Connection%20with%20Gabriel&body=Hi%20Gabriel,%20let's%20connect.%20My%20name%20is:%20"
+                <button id="open-contact-modal" type="button"
                     class="btn-tech w-full flex items-center justify-center py-[18px] px-6 rounded-[16px] text-gray-200 font-medium tracking-wide relative overflow-hidden group">
 
                     <!-- Inner glow effect -->
@@ -174,7 +174,7 @@
                         </svg>
                         <span>Let's connect</span>
                     </span>
-                </a>
+                </button>
             </div>
 
         </main>
@@ -1303,6 +1303,92 @@
 
         init();
 
+    </script>
+
+    <!-- Contact Form Modal -->
+    <div id="contact-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="card-container w-full max-w-sm p-6 transform scale-95 transition-transform duration-300"
+            id="contact-modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-white">Let's connect</h3>
+                <button id="close-modal" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <form id="contact-form" class="space-y-4">
+                <div>
+                    <label for="fname" class="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                    <input type="text" id="fname" required
+                        class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-colors"
+                        placeholder="Your name">
+                </div>
+                <div>
+                    <label for="lname" class="block text-sm font-medium text-gray-300 mb-1">Surname</label>
+                    <input type="text" id="lname" required
+                        class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-colors"
+                        placeholder="Your surname">
+                </div>
+                <button type="submit" class="btn-tech w-full py-3 rounded-xl text-white font-medium mt-2">
+                    Connect
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const openBtn = document.getElementById('open-contact-modal');
+            const closeBtn = document.getElementById('close-modal');
+            const modal = document.getElementById('contact-modal');
+            const modalContent = document.getElementById('contact-modal-content');
+            const form = document.getElementById('contact-form');
+
+            const openModal = () => {
+                modal.classList.remove('hidden');
+                // Small delay to allow the display:block to apply before animating opacity
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            };
+
+            const closeModal = () => {
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            };
+
+            openBtn.addEventListener('click', openModal);
+            closeBtn.addEventListener('click', closeModal);
+
+            // Close when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const fname = document.getElementById('fname').value.trim();
+                const lname = document.getElementById('lname').value.trim();
+
+                if (fname && lname) {
+                    const subject = encodeURIComponent("Synapse: Connection with Gabriel");
+                    const body = encodeURIComponent(`Hi Gabriel, let's connect. My name is: ${fname} ${lname}`);
+                    const mailtoLink = `mailto:gabriel.leguizamon01@universitadipavia.it?subject=${subject}&body=${body}`;
+
+                    window.location.href = mailtoLink;
+                    closeModal();
+                }
+            });
+        });
     </script>
 </body>
 
